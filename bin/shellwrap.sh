@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# @brief   Wrap Apps and Tools
+# @brief   Wrap java app
 # @version ver.1.0
 # @date    Mon Jul 15 21:48:32 2015
 # @company Frobas IT Department, www.frobas.com 2015
@@ -12,54 +12,52 @@ UTIL=$UTIL_ROOT/sh-util-srv/$UTIL_VERSION
 UTIL_LOG=$UTIL/log
 
 . $UTIL/bin/checkroot.sh
-. $UTIL/bin/logging.sh
 . $UTIL/bin/usage.sh
 . $UTIL/bin/devel.sh
 
-TOOL_NAME=shellwrap
-TOOL_VERSION=ver.1.0
-TOOL_HOME=$UTIL_ROOT/$TOOL_NAME/$TOOL_VERSION
-TOOL_CFG=$TOOL_HOME/conf/$TOOL_NAME.cfg
-TOOL_LOG=$TOOL_HOME/log
+SHELLWRAP_TOOL=shellwrap
+SHELLWRAP_VERSION=ver.1.0
+SHELLWRAP_HOME=$UTIL_ROOT/$SHELLWRAP_TOOL/$SHELLWRAP_VERSION
+SHELLWRAP_CFG=$SHELLWRAP_HOME/conf/$SHELLWRAP_TOOL.cfg
+SHELLWRAP_LOG=$SHELLWRAP_HOME/log
 
 declare -A SHELLWRAP_USAGE=(
-	[TOOL_NAME]="$TOOL_NAME"
+	[TOOL_NAME]="$SHELLWRAP_TOOL"
 	[ARG1]="[TOOL_NAME] name of tool (jar file)"
 	[EX-PRE]="# Deployment tool WoLAN"
-	[EX]="$TOOL_NAME WoLAN.jar"	
+	[EX]="$SHELLWRAP_TOOL WoLAN.jar"	
 )
 
-declare -A LOG=(
-	[TOOL]="$TOOL_NAME"
-	[FLAG]="info"
-	[PATH]="$TOOL_LOG"
-	[MSG]=""
-)
-
-TOOL_DEBUG="false"
+TOOL_DBG="false"
 
 #
-# @brief Main function 
-# @param Value required jar file
+# @brief   Main function 
+# @param   Value required jar file
+# @exitval Function __shellwrap exit with integer value
+#			0   - success operation 
+#			128 - missing argument
+#			129 - wrong argument (check jar file)
 #
 # @usage
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #
-# TOOL_NAME="test.jar"
+# local TOOL_NAME="test.jar"
 # __shellwrap "$TOOL_NAME"
 #
 function __shellwrap() {
-	TOOL_NAME=$1
+	local TOOL_NAME=$1
 	if [ -n "$TOOL_NAME" ]; then
+		local FUNC=${FUNCNAME[0]}
+		local MSG=""
 		if [ -e "$TOOL_NAME" ]; then
-			DATE=`date`
-			SH_TOOL_NAME="`basename $TOOL_NAME .jar`.sh"
-			RUN_TOOL_NAME="`basename $TOOL_NAME .jar`.run"
+			local DATE=`date`
+			local SH_TOOL_NAME="`basename $TOOL_NAME .jar`.sh"
+			local RUN_TOOL_NAME="`basename $TOOL_NAME .jar`.run"
 			cat <<EOF>>"$SH_TOOL_NAME"
 #!/bin/bash
 #
 # @brief   $TOOL_NAME
-# @version $TOOL_VERSION
+# @version ver.1.0 [wrap script]
 # @date    $DATE
 # @company Frobas IT Department, www.frobas.com 2016
 # @author  Vladimir Roncevic <vladimir.roncevic@frobas.com>
@@ -83,13 +81,24 @@ fi
 exit 0
 
 EOF
-			printf "%s\n" "Generating App executable file [$SH_TOOL_NAME]"
+			if [ "$TOOL_DBG" == "true" ]; then
+				MSG="Generating App executable file [$SH_TOOL_NAME]"
+				printf "$DSTA" "$ATMANAGER_TOOL" "$FUNC" "$MSG"
+			fi
 			cat "$SH_TOOL_NAME" "$TOOL_NAME" > "$RUN_TOOL_NAME"
-			printf "%s\n" "Remove $SH_TOOL_NAME"
+			if [ "$TOOL_DBG" == "true" ]; then
+				MSG="Remove $SH_TOOL_NAME"
+				printf "$DSTA" "$ATMANAGER_TOOL" "$FUNC" "$MSG"
+			fi
 			rm "$SH_TOOL_NAME"
-			printf "%s\n" "Set permission"
+			if [ "$TOOL_DBG" == "true" ]; then
+				MSG="Set permission"
+				printf "$DSTA" "$ATMANAGER_TOOL" "$FUNC" "$MSG"
+			fi
 			chmod -R 775 "$RUN_TOOL_NAME"
-			printf "%s\n\n" "Done"
+			if [ "$TOOL_DBG" == "true" ]; then
+				printf "$DEND" "$SHELLWRAP_TOOL" "$FUNC" "Done"
+			fi
 			exit 0
 		fi
 		__usage $SHELLWRAP_USAGE
@@ -108,12 +117,13 @@ EOF
 #			128 - missing argument
 #			129 - wrong argument (check jar file)
 #
-printf "\n%s\n%s\n\n" "$TOOL_NAME $TOOL_VERSION" "`date`"
+printf "\n%s\n%s\n\n" "$SHELLWRAP_TOOL $SHELLWRAP_VERSION" "`date`"
 __checkroot
 STATUS=$?
 if [ "$STATUS" -eq "$SUCCESS" ]; then
-	__shellwrap "$1"
+	set -u
+	TOOL=${1:-}
+	__shellwrap "$TOOL"
 fi
 
 exit 127
-
