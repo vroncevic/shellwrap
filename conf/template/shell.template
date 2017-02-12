@@ -1,0 +1,25 @@
+${H}"!/bin/bash"
+${H}
+${H}" @brief   ${TN}"
+${H}" @version ${V}"
+${H}" @date    ${DATE}"
+${H}" @company ${COMPANY}"
+${H}" @author  ${AN} <${AE}>"
+${H}
+
+"JAVA=java"
+
+"EXECUTABLE_JAR=\\\`which \\\"\\\$0\\\" 2>/dev/null\\\`"
+"[ \\\$? -gt 0 -a -f \\\"\\\$0\\\" ] && EXECUTABLE_JAR=\\\"./\\\$0\\\""
+
+"if test -n \\\"\\\$JAVA_HOME\\\"; then"
+{T}"JAVA=\\\"\\\$JAVA_HOME/bin/java\\\""
+"fi"
+
+"if [ ! -f ${JAVA} ]; then"
+{T}"exit 127"
+"else"
+{T}"exec \\\"\$JAVA\\\" -jar \\\$EXECUTABLE_JAR"
+"fi"
+"exit 0"
+

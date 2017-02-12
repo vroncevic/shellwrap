@@ -8,187 +8,134 @@
 #
 UTIL_ROOT=/root/scripts
 UTIL_VERSION=ver.1.0
-UTIL=$UTIL_ROOT/sh-util-srv/$UTIL_VERSION
-UTIL_LOG=$UTIL/log
+UTIL=${UTIL_ROOT}/sh_util/${UTIL_VERSION}
+UTIL_LOG=${UTIL}/log
 
-. $UTIL/bin/devel.sh
-. $UTIL/bin/usage.sh
-. $UTIL/bin/checkroot.sh
-. $UTIL/bin/checktool.sh
-. $UTIL/bin/logging.sh
-. $UTIL/bin/sendmail.sh
-. $UTIL/bin/loadconf.sh
-. $UTIL/bin/loadutilconf.sh
-. $UTIL/bin/progressbar.sh
+.	${UTIL}/bin/devel.sh
+.	${UTIL}/bin/usage.sh
+.	${UTIL}/bin/check_root.sh
+.	${UTIL}/bin/check_tool.sh
+.	${UTIL}/bin/logging.sh
+.	${UTIL}/bin/load_conf.sh
+.	${UTIL}/bin/load_util_conf.sh
+.	${UTIL}/bin/progress_bar.sh
 
 SHELLWRAP_TOOL=shellwrap
 SHELLWRAP_VERSION=ver.1.0
-SHELLWRAP_HOME=$UTIL_ROOT/$SHELLWRAP_TOOL/$SHELLWRAP_VERSION
-SHELLWRAP_CFG=$SHELLWRAP_HOME/conf/$SHELLWRAP_TOOL.cfg
-SHELLWRAP_UTIL_CFG=$SHELLWRAP_HOME/conf/${SHELLWRAP_TOOL}_util.cfg
-SHELLWRAP_LOG=$SHELLWRAP_HOME/log
+SHELLWRAP_HOME=${UTIL_ROOT}/${SHELLWRAP_TOOL}/${SHELLWRAP_VERSION}
+SHELLWRAP_CFG=${SHELLWRAP_HOME}/conf/${SHELLWRAP_TOOL}.cfg
+SHELLWRAP_UTIL_CFG=${SHELLWRAP_HOME}/conf/${SHELLWRAP_TOOL}_util.cfg
+SHELLWRAP_LOG=${SHELLWRAP_HOME}/log
 
 declare -A SHELLWRAP_USAGE=(
-	[USAGE_TOOL]="$SHELLWRAP_TOOL"
-	[USAGE_ARG1]="[TOOL_NAME] name of tool (jar file)"
-	[USAGE_EX_PRE]="# Deployment tool WoLAN"
-	[USAGE_EX]="$SHELLWRAP_TOOL WoLAN.jar"	
+	[USAGE_TOOL]="${SHELLWRAP_TOOL}"
+	[USAGE_ARG1]="[TOOL NAME] Name of tool (jar file)"
+	[USAGE_EX_PRE]="# Deployment: tool WoLAN"
+	[USAGE_EX]="${SHELLWRAP_TOOL} WoLAN.jar"
 )
 
-declare -A SHELLWRAP_LOG=(
-	[LOG_TOOL]="$SHELLWRAP_TOOL"
+declare -A SHELLWRAP_LOGGING=(
+	[LOG_TOOL]="${SHELLWRAP_TOOL}"
 	[LOG_FLAG]="info"
-	[LOG_PATH]="$SHELLWRAP_LOG"
+	[LOG_PATH]="${SHELLWRAP_LOG}"
 	[LOG_MSGE]="None"
 )
 
 declare -A PB_STRUCTURE=(
-	[BAR_WIDTH]=50
-	[MAX_PERCENT]=100
+	[BW]=50
+	[MP]=100
 	[SLEEP]=0.01
 )
 
 TOOL_DBG="false"
+TOOL_LOG="false"
+TOOL_NOTIFY="false"
 
 #
 # @brief   Main function 
 # @param   Value required jar file
 # @exitval Function __shellwrap exit with integer value
-#			0   - tool finished with success operation 
+#			0   - tool finished with success operation
 #			128 - missing argument(s) from cli
-#			129 - failed to load tool script configuration from file 
-#			130 - failed to load tool script utilities configuration from file
-#			131 - missing external tool java 
-#			132 - missing target file (check that exist in filesystem)
+#			129 - failed to load tool script configuration from files
+#			130 - missing tool java
+#			131 - missing target file (check that exist in filesystem)
 #
 # @usage
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #
-# local TOOL_NAME="test.jar"
-# __shellwrap "$TOOL_NAME"
+# local TN="test.jar"
+# __shellwrap "$TN"
 #
 function __shellwrap() {
-	local TOOL_NAME=$1
-	if [ -n "$TOOL_NAME" ]; then
-		local FUNC=${FUNCNAME[0]}
-		local MSG="Loading basic and util configuration"
-		printf "$SEND" "$OSSL_TOOL" "$MSG"
-		__progressbar PB_STRUCTURE
-		printf "%s\n\n" ""
-		declare -A configshellwrap=()
-		__loadconf $SHELLWRAP_CFG configshellwrap
-		local STATUS=$?
-		if [ "$STATUS" -eq "$NOT_SUCCESS" ]; then
-			MSG="Failed to load tool script configuration"
-			if [ "$TOOL_DBG" == "true" ]; then
-				printf "$DSTA" "$SHELLWRAP_TOOL" "$FUNC" "$MSG"
-			else
-				printf "$SEND" "$SHELLWRAP_TOOL" "$MSG"
-			fi
+	local TN=$1
+	if [ -n "$TN" ]; then
+		local FUNC=${FUNCNAME[0]} MSG="None" STATUS_CONF STATUS_CONF_UTIL STATUS
+		MSG="Loading basic and util configuration!"
+		__info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+		__progress_bar PB_STRUCTURE
+		declare -A config_shellwrap=()
+		__load_conf "$SHELLWRAP_CFG" config_shellwrap
+		STATUS_CONF=$?
+		declare -A config_shellwrap_util=()
+		__load_util_conf "$SHELLWRAP_UTIL_CFG" config_shellwrap_util
+		STATUS_CONF_UTIL=$?
+		declare -A STATUS_STRUCTURE=([1]=$STATUS_CONF [2]=$STATUS_CONF_UTIL)
+		__check_status STATUS_STRUCTURE
+		STATUS=$?
+		if [ $STATUS -eq $NOT_SUCCESS ]; then
+			MSG="Force exit!"
+			__info_debug_message_end "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
 			exit 129
 		fi
-		declare -A cfgshellwraputil=()
-		__loadutilconf $SHELLWRAP_UTIL_CFG cfgshellwraputil
+		TOOL_DBG=${config_shellwrap[DEBUGGING]}
+		TOOL_LOG=${config_shellwrap[LOGGING]}
+		TOOL_NOTIFY=${config_shellwrap[EMAILING]}
+		local JAVA=${config_shellwrap_util[JAVA]}
+		__check_tool "${JAVA}"
 		STATUS=$?
-		if [ "$STATUS" -eq "$NOT_SUCCESS" ]; then
-			MSG="Failed to load tool script utilities configuration"
-			if [ "$TOOL_DBG" == "true" ]; then
-				printf "$DSTA" "$SHELLWRAP_TOOL" "$FUNC" "$MSG"
-			else
-				printf "$SEND" "$SHELLWRAP_TOOL" "$MSG"
-			fi
+		if [ $STATUS -eq $NOT_SUCCESS ]; then
+			MSG="Install tool ${JAVA}"
+			__info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+			MSG="Force exit!"
+			__info_debug_message_end "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
 			exit 130
 		fi
-		__checktool "${cfgshellwraputil[JAVA]}"
-		STATUS=$?
-		if [ "$STATUS" -eq "$NOT_SUCCESS" ]; then
-			MSG="Missing external tool ${cfgshellwraputil[JAVA]}"
-			if [ "${configshellwrap[LOGGING]}" == "true" ]; then
-				SHELLWRAP_LOG[LOG_MSGE]=$MSG
-				SHELLWRAP_LOG[LOG_FLAG]="error"
-				__logging SHELLWRAP_LOG
-			fi
-			if [ "${configshellwrap[EMAILING]}" == "true" ]; then
-				__sendmail "$MSG" "${configshellwrap[ADMIN_EMAIL]}"
-			fi
-			exit 131
-		fi
-		if [ -e "$TOOL_NAME" ]; then
-			local DATE=`date`
-			local SH_TOOL_NAME="`basename $TOOL_NAME .jar`.sh"
-			local RUN_TOOL_NAME="`basename $TOOL_NAME .jar`.run"
-			local WRAP_SCRIPT="
-#!/bin/bash
-#
-# @brief   $TOOL_NAME
-# @version ver.1.0 [shell wrapper]
-# @date    $DATE
-# @company Frobas IT Department, www.frobas.com 2016
-# @author  Vladimir Roncevic <vladimir.roncevic@frobas.com>
-#
-
-JAVA=java
-
-EXECUTABLE_JAR=\`which \"\$0\" 2>/dev/null\`
-[ \$? -gt 0 -a -f \"\$0\" ] && EXECUTABLE_JAR=\"./\$0\"
-
-if test -n \"\$JAVA_HOME\"; then
-	JAVA=\"\$JAVA_HOME/bin/java\"
-fi
-
-if [ ! -f ${cfgshellwraputil[JAVA]} ]; then
-	exit 127
-else
-	exec \"\$JAVA\" -jar \$EXECUTABLE_JAR
-fi
-	
-exit 0
-"
-			echo -e "$WRAP_SCRIPT" > "$SH_TOOL_NAME"
-			MSG="Generating App executable file [$SH_TOOL_NAME]"
-			if [ "$TOOL_DBG" == "true" ]; then
-				printf "$DSTA" "$SHELLWRAP_TOOL" "$FUNC" "$MSG"
-			else
-				printf "$SEND" "$SHELLWRAP_TOOL" "$MSG"
-			fi
-			cat "$SH_TOOL_NAME" "$TOOL_NAME" > "$RUN_TOOL_NAME"
-			MSG="Remove $SH_TOOL_NAME"
-			if [ "$TOOL_DBG" == "true" ]; then
-				printf "$DSTA" "$SHELLWRAP_TOOL" "$FUNC" "$MSG"
-			else
-				printf "$SEND" "$SHELLWRAP_TOOL" "$MSG"
-			fi
-			rm "$SH_TOOL_NAME"
-			MSG="Set permission"
-			if [ "$TOOL_DBG" == "true" ]; then
-				printf "$DSTA" "$SHELLWRAP_TOOL" "$FUNC" "$MSG"
-			else
-				printf "$SEND" "$SHELLWRAP_TOOL" "$MSG"
-			fi
-			chmod -R 775 "$RUN_TOOL_NAME"
-			if [ "$TOOL_DBG" == "true" ]; then
-				printf "$DEND" "$SHELLWRAP_TOOL" "$FUNC" "Done"
-			fi
-			MSG="Wrapping java application [$TOOL_NAME]"
-			if [ "${configshellwrap[LOGGING]}" == "true" ]; then
-				SHELLWRAP_LOG[LOG_MSGE]=$MSG
-				SHELLWRAP_LOG[LOG_FLAG]="info"
-				__logging SHELLWRAP_LOG
-			fi
+		if [ -e "${TN}" ]; then
+			local DATE=`date` SH_TN="`basename ${TN} .jar`.sh" H="#" T="	"
+			local RUN_TN="`basename ${TN} .jar`.run" SHL
+			local SHT=${confg_shellwrap_util[SHELL]}
+			local SHTF="${SHELLWRAP_HOME}/conf/${SHT}"
+			local AN=${confg_shellwrap_util[AUTHOR_NAME]}
+			local AE=${confg_shellwrap_util[AUTHOR_EMAIL]}
+			local COMPANY=${confg_shellwrap_util[COMPANY]}
+			local V=${confg_shellwrap_util[VERSION]}
+			while read SHL
+			do
+				eval echo "${SHL}" >> ${SH_TN}
+			done < ${SHTF}
+			MSG="Generating App executable file [${SH_TN}]"
+			__info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+			cat "$SH_TN" "$TN" > "$RUN_TN"
+			MSG="Remove ${SH_TN}"
+			__info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+			rm "$SH_TN"
+			MSG="Set permission!"
+			__info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+			eval "chmod -R 775 ${RUN_TN}"
+			MSG="Wrapping java application [${TN}]"
+			__info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+			SHELLWRAP_LOGGING[LOG_MSGE]=$MSG
+			SHELLWRAP_LOGGING[LOG_FLAG]="info"
+			__logging SHELLWRAP_LOGGING
+			__info_debug_message_end "Done" "$FUNC" "$SHELLWRAP_TOOL"
 			exit 0
 		fi
-		MSG="Missing target file [$TOOL_NAME]"
-		if [ "$TOOL_DBG" == "true" ]; then
-			printf "$DSTA" "$SHELLWRAP_TOOL" "$FUNC" "$MSG"
-		else
-			printf "$SEND" "$SHELLWRAP_TOOL" "$MSG"
-		fi
-		if [ "${configshellwrap[LOGGING]}" == "true" ]; then
-			SHELLWRAP_LOG[LOG_MSGE]=$MSG
-			SHELLWRAP_LOG[LOG_FLAG]="info"
-			__logging SHELLWRAP_LOG
-		fi
-		exit 132
+		MSG="Check target tool [${TN}]"
+		__info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+		MSG="Force exit!"
+		__info_debug_message_end "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+		exit 131
 	fi
 	__usage SHELLWRAP_USAGE
 	exit 128
@@ -198,16 +145,15 @@ exit 0
 # @brief   Main entry point
 # @param   Value required  jar file
 # @exitval Script tool shellwrap exit with integer value
-#			0   - tool finished with success operation 
-# 			127 - run tool script as root user from cli
+#			0   - tool finished with success operation
+#			127 - run tool script as root user from cli
 #			128 - missing argument(s) from cli
-#			129 - failed to load tool script configuration from file 
-#			130 - failed to load tool script utilities configuration from file
-#			131 - missing external tool java 
-#			132 - missing target file (check that exist in filesystem)
+#			129 - failed to load tool script configuration from files
+#			130 - missing tool java
+#			131 - missing target file (check that exist in filesystem)
 #
-printf "\n%s\n%s\n\n" "$SHELLWRAP_TOOL $SHELLWRAP_VERSION" "`date`"
-__checkroot
+printf "\n%s\n%s\n\n" "${SHELLWRAP_TOOL} ${SHELLWRAP_VERSION}" "`date`"
+__check_root
 STATUS=$?
 if [ $STATUS -eq $SUCCESS ]; then
 	__shellwrap $1
