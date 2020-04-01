@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # @brief   Wrap java (jar) App with shell script
-# @version ver.1.0
+# @version ver.1.0.0
 # @date    Mon Jul 15 21:48:32 2015
 # @company Frobas IT Department, www.frobas.com 2015
 # @author  Vladimir Roncevic <vladimir.roncevic@frobas.com>
