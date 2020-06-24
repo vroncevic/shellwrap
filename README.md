@@ -1,8 +1,8 @@
 # Shell wrapper for Java Application.
 
-***shellwrap*** is shell tool for creating Java Service Wrapper.
+**shellwrap** is shell tool for creating Java Service Wrapper.
 
-Developed in bash code: ***100%***.
+Developed in [bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)) code: **100%**.
 
 The README is used to introduce the tool and provide instructions on
 how to install the tool, any machine dependencies it may have and any
@@ -14,19 +14,19 @@ other information that should be provided before the tool is installed.
 <!-- START doctoc -->
 **Table of Contents**
 
-- [Installation](https://github.com/vroncevic/shellwrap#installation)
-- [Usage](https://github.com/vroncevic/shellwrap#usage)
-- [Dependencies](https://github.com/vroncevic/shellwrap#dependencies)
-- [Shell tool structure](https://github.com/vroncevic/shellwrap#shell-tool-structure)
-- [Docs](https://github.com/vroncevic/shellwrap#docs)
-- [Copyright and Licence](https://github.com/vroncevic/shellwrap#copyright-and-licence)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Dependencies](#dependencies)
+- [Shell tool structure](#shell-tool-structure)
+- [Docs](#docs)
+- [Copyright and Licence](#copyright-and-licence)
 <!-- END doctoc -->
 
 ### INSTALLATION
 
 Navigate to release [page](https://github.com/vroncevic/shellwrap/releases) download and extract release archive.
 
-To install modules type the following:
+To install **shellwrap** type the following:
 
 ```
 tar xvzf shellwrap-x.y.z.tar.gz
@@ -55,15 +55,14 @@ shellwrap MyApp.jar
 
 ### DEPENDENCIES
 
-This tool requires these other modules and libraries:
-
-* sh_util https://github.com/vroncevic/sh_util
+**shellwrap** requires next modules and libraries:
+* sh_util [https://github.com/vroncevic/sh_util](https://github.com/vroncevic/sh_util)
 
 ### SHELL TOOL STRUCTURE
 
-***shellwrap*** is based on MOP.
+**shellwrap** is based on MOP.
 
-Shell tool structure:
+Code structure:
 ```
 .
 ├── bin/
@@ -81,14 +80,14 @@ Shell tool structure:
 [![Documentation Status](https://readthedocs.org/projects/shellwrap/badge/?version=latest)](https://shellwrap.readthedocs.io/projects/shellwrap/en/latest/?badge=latest)
 
 More documentation and info at:
-
-* https://shellwrap.readthedocs.io/en/latest/
+* [https://shellwrap.readthedocs.io/en/latest/](https://shellwrap.readthedocs.io/en/latest/)
+* [https://www.gnu.org/software/bash/manual/](https://www.gnu.org/software/bash/manual/)
 
 ### COPYRIGHT AND LICENCE
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Copyright (C) 2018 by https://vroncevic.github.io/shellwrap
+Copyright (C) 2015 by [vroncevic.github.io/shellwrap](https://vroncevic.github.io/shellwrap)
 
 This tool is free software; you can redistribute it and/or modify
 it under the same terms as Bash itself, either Bash version 4.2.47 or,
