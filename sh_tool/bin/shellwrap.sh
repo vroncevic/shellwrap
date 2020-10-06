@@ -27,11 +27,11 @@ SHELLWRAP_CFG=${SHELLWRAP_HOME}/conf/${SHELLWRAP_TOOL}.cfg
 SHELLWRAP_UTIL_CFG=${SHELLWRAP_HOME}/conf/${SHELLWRAP_TOOL}_util.cfg
 SHELLWRAP_LOG=${SHELLWRAP_HOME}/log
 
-declare -A SHELLWRAP_USAGE=(
-    [USAGE_TOOL]="${SHELLWRAP_TOOL}"
-    [USAGE_ARG1]="[TOOL NAME] Name of tool (jar file)"
-    [USAGE_EX_PRE]="# Deployment: tool WoLAN"
-    [USAGE_EX]="${SHELLWRAP_TOOL} WoLAN.jar"
+declare -A SHELLWRAP_Usage=(
+    [Usage_TOOL]="${SHELLWRAP_TOOL}"
+    [Usage_ARG1]="[TOOL NAME] Name of tool (jar file)"
+    [Usage_EX_PRE]="# Deployment: tool WoLAN"
+    [Usage_EX]="${SHELLWRAP_TOOL} WoLAN.jar"
 )
 
 declare -A SHELLWRAP_LOGGING=(
@@ -138,7 +138,7 @@ function __shellwrap {
         info_debug_message_end "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
         exit 131
     fi
-    usage SHELLWRAP_USAGE
+    usage SHELLWRAP_Usage
     exit 128
 }
 
