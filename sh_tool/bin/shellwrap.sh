@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # @brief   Wrap java (jar) App with shell script
-# @version ver.1.0.0
+# @version ver.1.0
 # @date    Mon Jul 15 21:48:32 2015
 # @company Frobas IT Department, www.frobas.com 2015
 # @author  Vladimir Roncevic <vladimir.roncevic@frobas.com>
@@ -27,7 +27,7 @@ SHELLWRAP_CFG=${SHELLWRAP_HOME}/conf/${SHELLWRAP_TOOL}.cfg
 SHELLWRAP_UTIL_CFG=${SHELLWRAP_HOME}/conf/${SHELLWRAP_TOOL}_util.cfg
 SHELLWRAP_LOG=${SHELLWRAP_HOME}/log
 
-declare -A SHELLWRAP_Usage=(
+declare -A SHELLWRAP_USAGE=(
     [Usage_TOOL]="${SHELLWRAP_TOOL}"
     [Usage_ARG1]="[TOOL NAME] Name of tool (jar file)"
     [Usage_EX_PRE]="# Deployment: tool WoLAN"
@@ -138,7 +138,7 @@ function __shellwrap {
         info_debug_message_end "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
         exit 131
     fi
-    usage SHELLWRAP_Usage
+    usage SHELLWRAP_USAGE
     exit 128
 }
 
