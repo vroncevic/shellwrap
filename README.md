@@ -1,3 +1,5 @@
+<img align="right" src="https://raw.githubusercontent.com/vroncevic/shellwrap/dev/docs/shellwrap_logo.png" width="25%">
+
 # Shell wrapper for Java Application
 
 **shellwrap** is shell tool for creating Java Service Wrapper.
@@ -32,11 +34,11 @@ Navigate to release **[page](https://github.com/vroncevic/shellwrap/releases)** 
 To install **shellwrap** type the following:
 
 ```
-tar xvzf shellwrap-x.y.z.tar.gz
-cd shellwrap-x.y.z
-cp -R ~/sh_tool/bin/   /root/scripts/shellwrap/ver.1.0/
-cp -R ~/sh_tool/conf/  /root/scripts/shellwrap/ver.1.0/
-cp -R ~/sh_tool/log/   /root/scripts/shellwrap/ver.1.0/
+tar xvzf shellwrap-x.y.tar.gz
+cd shellwrap-x.y
+cp -R ~/sh_tool/bin/   /root/scripts/shellwrap/ver.x.y/
+cp -R ~/sh_tool/conf/  /root/scripts/shellwrap/ver.x.y/
+cp -R ~/sh_tool/log/   /root/scripts/shellwrap/ver.x.y/
 ```
 
 ![alt tag](https://raw.githubusercontent.com/vroncevic/shellwrap/dev/docs/setup_tree.png)
@@ -49,7 +51,7 @@ Or You can use docker to create image/container.
 
 ```
 # Create symlink for shell tool
-ln -s /root/scripts/shellwrap/ver.1.0/bin/shellwrap.sh /root/bin/shellwrap
+ln -s /root/scripts/shellwrap/ver.x.y/bin/shellwrap.sh /root/bin/shellwrap
 
 # Setting PATH
 export PATH=${PATH}:/root/bin/
@@ -61,7 +63,7 @@ shellwrap MyApp.jar
 ### Dependencies
 
 **shellwrap** requires next modules and libraries:
-* sh_util [https://github.com/vroncevic/sh_util](https://github.com/vroncevic/sh_util)
+* shellwrap [https://github.com/vroncevic/shellwrap](https://github.com/vroncevic/shellwrap)
 
 ### Shell tool structure
 
@@ -69,7 +71,7 @@ shellwrap MyApp.jar
 
 Code structure:
 ```
-.
+sh_tool/
 ├── bin/
 │   ├── shellwrap.sh
 │   └── of_operation.sh
@@ -92,7 +94,7 @@ More documentation and info at:
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Copyright (C) 2015 by [vroncevic.github.io/shellwrap](https://vroncevic.github.io/shellwrap)
+Copyright (C) 2016 by [vroncevic.github.io/shellwrap](https://vroncevic.github.io/shellwrap)
 
 **shellwrap** is free software; you can redistribute it and/or modify
 it under the same terms as Bash itself, either Bash version 4.2.47 or,
