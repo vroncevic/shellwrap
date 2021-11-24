@@ -33,11 +33,16 @@ other information that should be provided before the tool is installed.
 Installation
 -------------
 
+|Debian Linux OS|
+
+.. |Debian Linux OS| image:: https://raw.githubusercontent.com/vroncevic/shellwrap/dev/docs/debtux.png
+   :target: https://www.debian.org
+
 Navigate to release `page`_ download and extract release archive.
 
 .. _page: https://github.com/vroncevic/shellwrap/releases
 
-To install **shellwrap** type the following:
+To install **shellwrap** type the following
 
 .. code-block:: bash
 
@@ -57,7 +62,7 @@ Or You can use Docker to create image/container.
 Dependencies
 -------------
 
-**shellwrap** requires these other modules and libraries:
+**shellwrap** requires these other modules and libraries
 
 * sh_util `https://github.com/vroncevic/sh_util <https://github.com/vroncevic/sh_util>`_
 
@@ -66,17 +71,21 @@ Shell tool structure
 
 **shellwrap** is based on MOP.
 
-Code structure:
+Shell tool structure
 
 .. code-block:: bash
 
    sh_tool/
    ├── bin/
-   │   ├── shellwrap.sh
-   │   └── of_operation.sh
+   │   ├── center.sh
+   │   ├── display_logo.sh
+   │   └── shellwrap.sh
    ├── conf/
    │   ├── shellwrap.cfg
-   │   └── shellwrap_util.cfg
+   │   ├── shellwrap.logo
+   │   ├── shellwrap_util.cfg
+   │   └── template/
+   │       └── shell.template
    └── log/
        └── shellwrap.log
 
