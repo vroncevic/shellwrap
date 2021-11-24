@@ -2,9 +2,9 @@
 #
 # @brief   Wrap java (jar) App with shell script
 # @version ver.1.0
-# @date    Mon Jul 15 21:48:32 2015
-# @company Frobas IT Department, www.frobas.com 2015
-# @author  Vladimir Roncevic <vladimir.roncevic@frobas.com>
+# @date    Wed 24 Nov 2021 08:18:39 PM CET
+# @company None, free software to use 2021
+# @author  Vladimir Roncevic <elektron.ronca@gmail.com>
 #
 UTIL_ROOT=/root/scripts
 UTIL_VERSION=ver.1.0
@@ -21,17 +21,24 @@ UTIL_LOG=${UTIL}/log
 .    ${UTIL}/bin/progress_bar.sh
 
 SHELLWRAP_TOOL=shellwrap
-SHELLWRAP_VERSION=ver.1.0
+SHELLWRAP_VERSION=ver.2.0
 SHELLWRAP_HOME=${UTIL_ROOT}/${SHELLWRAP_TOOL}/${SHELLWRAP_VERSION}
 SHELLWRAP_CFG=${SHELLWRAP_HOME}/conf/${SHELLWRAP_TOOL}.cfg
 SHELLWRAP_UTIL_CFG=${SHELLWRAP_HOME}/conf/${SHELLWRAP_TOOL}_util.cfg
+SHELLWRAP_LOGO=${SHELLWRAP_HOME}/conf/${SHELLWRAP_TOOL}.logo
 SHELLWRAP_LOG=${SHELLWRAP_HOME}/log
 
+tabs 4
+CONSOLE_WIDTH=$(stty size | awk '{print $2}')
+
+.    ${SHELLWRAP_HOME}/bin/center.sh
+.    ${SHELLWRAP_HOME}/bin/display_logo.sh
+
 declare -A SHELLWRAP_USAGE=(
-    [Usage_TOOL]="${SHELLWRAP_TOOL}"
-    [Usage_ARG1]="[TOOL NAME] Name of tool (jar file)"
-    [Usage_EX_PRE]="# Deployment: tool WoLAN"
-    [Usage_EX]="${SHELLWRAP_TOOL} WoLAN.jar"
+    [USAGE_TOOL]="${SHELLWRAP_TOOL}"
+    [USAGE_ARG1]="[TOOL NAME] Name of tool (jar file)"
+    [USAGE_EX_PRE]="# Deployment: tool WoLAN"
+    [USAGE_EX]="${SHELLWRAP_TOOL} WoLAN.jar"
 )
 
 declare -A SHELLWRAP_LOGGING=(
@@ -69,6 +76,7 @@ TOOL_NOTIFY="false"
 #
 function __shellwrap {
     local TN=$1
+    display_logo
     if [ -n "$TN" ]; then
         local FUNC=${FUNCNAME[0]} MSG="None"
         local STATUS_CONF STATUS_CONF_UTIL STATUS
@@ -105,12 +113,12 @@ function __shellwrap {
         if [ -e "${TN}" ]; then
             local DATE=`date` SH_TN="`basename ${TN} .jar`.sh" H="#" T="    "
             local RUN_TN="`basename ${TN} .jar`.run" SHL
-            local SHT=${confg_shellwrap_util[SHELL]}
+            local SHT="${config_shellwrap_util[SHELL_SCR]}"
             local SHTF="${SHELLWRAP_HOME}/conf/${SHT}"
-            local AN=${confg_shellwrap_util[AUTHOR_NAME]}
-            local AE=${confg_shellwrap_util[AUTHOR_EMAIL]}
-            local COMPANY=${confg_shellwrap_util[COMPANY]}
-            local V=${confg_shellwrap_util[VERSION]}
+            local AN=${config_shellwrap_util[AUTHOR_NAME]}
+            local AE=${config_shellwrap_util[AUTHOR_EMAIL]}
+            local COMPANY=${config_shellwrap_util[COMPANY]}
+            local V=${config_shellwrap_util[VERSION]}
             while read SHL
             do
                 eval echo "${SHL}" >> ${SH_TN}
@@ -120,7 +128,7 @@ function __shellwrap {
             cat "$SH_TN" "$TN" > "$RUN_TN"
             MSG="Remove ${SH_TN}"
             info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
-            rm "$SH_TN"
+            #rm "$SH_TN"
             MSG="Set permission!"
             info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
             eval "chmod -R 775 ${RUN_TN}"
@@ -161,4 +169,3 @@ if [ $STATUS -eq $SUCCESS ]; then
 fi
 
 exit 127
-

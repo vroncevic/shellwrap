@@ -1,10 +1,10 @@
-${H}"!/bin/bash"
+"${H}!/bin/bash"
 ${H}
-${H}" @brief   ${TN}"
-${H}" @version ${V}"
-${H}" @date	${DATE}"
-${H}" @company ${COMPANY}"
-${H}" @author  ${AN} <${AE}>"
+"${H} @brief   ${TN}"
+"${H} @version ${V}"
+"${H} @date    ${DATE}"
+"${H} @company ${COMPANY}"
+"${H} @author  ${AN} <${AE}>"
 ${H}
 
 "JAVA=java"
@@ -13,13 +13,12 @@ ${H}
 "[ \\\$? -gt 0 -a -f \\\"\\\$0\\\" ] && EXECUTABLE_JAR=\\\"./\\\$0\\\""
 
 "if test -n \\\"\\\$JAVA_HOME\\\"; then"
-{T}"JAVA=\\\"\\\$JAVA_HOME/bin/java\\\""
+"${T}JAVA=\\\"\\\$JAVA_HOME/bin/java\\\""
 "fi"
 
-"if [ ! -f ${JAVA} ]; then"
-{T}"exit 127"
+"if [ ! -f \\\${JAVA} ]; then"
+"${T}exit 127"
 "else"
-{T}"exec \\\"\$JAVA\\\" -jar \\\$EXECUTABLE_JAR"
+"${T}exec \\\"\$JAVA\\\" -jar \\\$EXECUTABLE_JAR"
 "fi"
 "exit 0"
-
