@@ -6,7 +6,7 @@
 
 Developed in **[bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell))** code: **100%**.
 
-[![shellwrap shell checker](https://github.com/vroncevic/shellwrap/workflows/shellwrap%20shell%20checker/badge.svg)](https://github.com/vroncevic/shellwrap/actions?query=workflow%3A%22shellwrap+shell+checker%22)
+[![shellwrap_shell_checker](https://github.com/vroncevic/shellwrap/actions/workflows/shellwrap_shell_checker.yml/badge.svg)](https://github.com/vroncevic/shellwrap/actions/workflows/shellwrap_shell_checker.yml)
 
 The README is used to introduce the tool and provide instructions on
 how to install the tool, any machine dependencies it may have and any
@@ -76,8 +76,6 @@ lrwxrwxrwx 1 root root 48 Nov 24 20:20 /root/bin/shellwrap -> /root/scripts/shel
 
 Or You can use docker to create image/container.
 
-[![shellwrap docker checker](https://github.com/vroncevic/shellwrap/workflows/shellwrap%20docker%20checker/badge.svg)](https://github.com/vroncevic/shellwrap/actions?query=workflow%3A%22shellwrap+docker+checker%22)
-
 ### Usage
 
 ```
@@ -96,13 +94,16 @@ Wed 24 Nov 2021 09:02:08 PM CET
 [check_root] Check permission for current session? [ok]
 [check_root] Done
 
-	                                             
-	     _          _ _                          
-	 ___| |__   ___| | |_      ___ __ __ _ _ __  
-	/ __| '_ \ / _ \ | \ \ /\ / / '__/ _` | '_ \ 
-	\__ \ | | |  __/ | |\ V  V /| | | (_| | |_) |
-	|___/_| |_|\___|_|_| \_/\_/ |_|  \__,_| .__/ 
-	                                      |_|    
+                                                                        
+           ██               ██  ██                                      
+          ░██              ░██ ░██                                      
+    ██████░██       █████  ░██ ░██ ███     ██ ██████  ██████   ██████   
+   ██░░░░ ░██████  ██░░░██ ░██ ░██░░██  █ ░██░░██░░█ ░░░░░░██ ░██░░░██  
+  ░░█████ ░██░░░██░███████ ░██ ░██ ░██ ███░██ ░██ ░   ███████ ░██  ░██  
+   ░░░░░██░██  ░██░██░░░░  ░██ ░██ ░████░████ ░██    ██░░░░██ ░██████   
+   ██████ ░██  ░██░░██████ ███ ███ ███░ ░░░██░███   ░░████████░██░░░    
+  ░░░░░░  ░░   ░░  ░░░░░░ ░░░ ░░░ ░░░    ░░░ ░░░     ░░░░░░░░ ░██       
+                                                              ░░        
 	                                             
 		Info   github.io/shellwrap ver.2.0 
 		Issue  github.io/issue
@@ -175,7 +176,7 @@ More documentation and info at
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Copyright (C) 2016 by [vroncevic.github.io/shellwrap](https://vroncevic.github.io/shellwrap)
+Copyright (C) 2016 - 2024 by [vroncevic.github.io/shellwrap](https://vroncevic.github.io/shellwrap)
 
 **shellwrap** is free software; you can redistribute it and/or modify
 it under the same terms as Bash itself, either Bash version 4.2.47 or,
