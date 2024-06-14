@@ -1,6 +1,6 @@
-<img align="right" src="https://raw.githubusercontent.com/vroncevic/shellwrap/dev/docs/shellwrap_logo.png" width="25%">
-
 # Shell wrapper for Java Application
+
+<img align="right" src="https://raw.githubusercontent.com/vroncevic/shellwrap/dev/docs/shellwrap_logo.png" width="25%">
 
 **shellwrap** is shell tool for creating Java Service Wrapper.
 
@@ -35,7 +35,7 @@ Navigate to release **[page](https://github.com/vroncevic/shellwrap/releases)** 
 
 To install **shellwrap** type the following
 
-```
+```bash
 tar xvzf shellwrap-x.y.tar.gz
 cd shellwrap-x.y
 cp -R ~/sh_tool/bin/   /root/scripts/shellwrap/ver.x.y/
@@ -44,7 +44,8 @@ cp -R ~/sh_tool/log/   /root/scripts/shellwrap/ver.x.y/
 ```
 
 Self generated setup script and execution
-```
+
+```bash
 ./shellwrap_setup.sh
 
 [setup] installing App/Tool/Script shellwrap
@@ -78,7 +79,7 @@ Or You can use docker to create image/container.
 
 ### Usage
 
-```
+```bash
 # Create symlink for shell tool
 ln -s /root/scripts/shellwrap/ver.x.y/bin/shellwrap.sh /root/bin/shellwrap
 
@@ -148,7 +149,8 @@ Wed 24 Nov 2021 09:02:08 PM CET
 **shellwrap** is based on MOP.
 
 Shell tool structure
-```
+
+```bash
 sh_tool/
 ├── bin/
 │   ├── center.sh
