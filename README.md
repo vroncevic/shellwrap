@@ -36,11 +36,11 @@ Navigate to release **[page](https://github.com/vroncevic/shellwrap/releases)** 
 To install **shellwrap** type the following
 
 ```bash
-tar xvzf shellwrap-x.y.tar.gz
-cd shellwrap-x.y
-cp -R ~/sh_tool/bin/   /root/scripts/shellwrap/ver.x.y/
-cp -R ~/sh_tool/conf/  /root/scripts/shellwrap/ver.x.y/
-cp -R ~/sh_tool/log/   /root/scripts/shellwrap/ver.x.y/
+tar xvzf shellwrap-3.0.tar.gz
+cd shellwrap-3.0
+cp -R ~/sh_tool/bin/   /root/scripts/shellwrap/ver.3.0/
+cp -R ~/sh_tool/conf/  /root/scripts/shellwrap/ver.3.0/
+cp -R ~/sh_tool/log/   /root/scripts/shellwrap/ver.3.0/
 ```
 
 Self generated setup script and execution
@@ -49,7 +49,7 @@ Self generated setup script and execution
 ./shellwrap_setup.sh
 
 [setup] installing App/Tool/Script shellwrap
-	Wed 24 Nov 2021 08:20:09 PM CET
+	Tue Dec 16 06:03:21 PM CET 2025
 [setup] clean up App/Tool/Script structure
 [setup] copy App/Tool/Script structure
 [setup] remove github editor configuration files
@@ -57,10 +57,8 @@ Self generated setup script and execution
 [setup] create symbolic link of App/Tool/Script
 [setup] done
 
-/root/scripts/shellwrap/ver.2.0/
+/root/scripts/shellwrap/ver.3.0/
 ├── bin/
-│   ├── center.sh
-│   ├── display_logo.sh
 │   └── shellwrap.sh
 ├── conf/
 │   ├── shellwrap.cfg
@@ -72,7 +70,7 @@ Self generated setup script and execution
     └── shellwrap.log
 
 4 directories, 8 files
-lrwxrwxrwx 1 root root 48 Nov 24 20:20 /root/bin/shellwrap -> /root/scripts/shellwrap/ver.2.0/bin/shellwrap.sh
+lrwxrwxrwx 1 root root 48 Dec 16 06:03 /root/bin/shellwrap -> /root/scripts/shellwrap/ver.3.0/bin/shellwrap.sh
 ```
 
 Or You can use docker to create image/container.
@@ -81,7 +79,7 @@ Or You can use docker to create image/container.
 
 ```bash
 # Create symlink for shell tool
-ln -s /root/scripts/shellwrap/ver.x.y/bin/shellwrap.sh /root/bin/shellwrap
+ln -s /root/scripts/shellwrap/ver.3.0/bin/shellwrap.sh /root/bin/shellwrap
 
 # Setting PATH
 export PATH=${PATH}:/root/bin/
@@ -89,8 +87,8 @@ export PATH=${PATH}:/root/bin/
 # Creating wrapper script for Java Application
 shellwrap WoLAN.jar
                                                                                              
-shellwrap ver.2.0
-Wed 24 Nov 2021 09:02:08 PM CET
+shellwrap ver.3.0
+Tue Dec 16 06:03:41 PM CET 2025
 
 [check_root] Check permission for current session? [ok]
 [check_root] Done
@@ -106,7 +104,7 @@ Wed 24 Nov 2021 09:02:08 PM CET
   ░░░░░░  ░░   ░░  ░░░░░░ ░░░ ░░░ ░░░    ░░░ ░░░     ░░░░░░░░ ░██       
                                                               ░░        
 	                                             
-		Info   github.io/shellwrap ver.2.0 
+		Info   github.io/shellwrap ver.3.0 
 		Issue  github.io/issue
 		Author vroncevic.github.io
 
@@ -114,13 +112,13 @@ Wed 24 Nov 2021 09:02:08 PM CET
 100% [================================================]
 
 [load_conf] Loading App/Tool/Script configuration!
-[check_cfg] Checking configuration file [/root/scripts/shellwrap/ver.2.0/conf/shellwrap.cfg] [ok]
+[check_cfg] Checking configuration file [/root/scripts/shellwrap/ver.3.0/conf/shellwrap.cfg] [ok]
 [check_cfg] Done
 
 [load_conf] Done
 
 [load_util_conf] Load module configuration!
-[check_cfg] Checking configuration file [/root/scripts/shellwrap/ver.2.0/conf/shellwrap_util.cfg] [ok]
+[check_cfg] Checking configuration file [/root/scripts/shellwrap/ver.3.0/conf/shellwrap_util.cfg] [ok]
 [check_cfg] Done
 
 [load_util_conf] Done
@@ -132,7 +130,7 @@ Wed 24 Nov 2021 09:02:08 PM CET
 [shellwrap] Remove WoLAN.sh
 [shellwrap] Set permission!
 [shellwrap] Wrapping java application [WoLAN.jar]
-[logging] Checking directory [/root/scripts/shellwrap/ver.2.0/log/]? [ok]
+[logging] Checking directory [/root/scripts/shellwrap/ver.3.0/log/]? [ok]
 [logging] Write info log!
 [logging] Done
 
@@ -153,8 +151,6 @@ Shell tool structure
 ```bash
 sh_tool/
 ├── bin/
-│   ├── center.sh
-│   ├── display_logo.sh
 │   └── shellwrap.sh
 ├── conf/
 │   ├── shellwrap.cfg
@@ -178,7 +174,7 @@ More documentation and info at
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Copyright (C) 2016 - 2024 by [vroncevic.github.io/shellwrap](https://vroncevic.github.io/shellwrap)
+Copyright (C) 2016 - 2026 by [vroncevic.github.io/shellwrap](https://vroncevic.github.io/shellwrap)
 
 **shellwrap** is free software; you can redistribute it and/or modify
 it under the same terms as Bash itself, either Bash version 4.2.47 or,
