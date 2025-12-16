@@ -11,28 +11,21 @@ UTIL_VERSION=ver.1.0
 UTIL=${UTIL_ROOT}/sh_util/${UTIL_VERSION}
 UTIL_LOG=${UTIL}/log
 
-.    ${UTIL}/bin/devel.sh
-.    ${UTIL}/bin/usage.sh
 .    ${UTIL}/bin/check_root.sh
 .    ${UTIL}/bin/check_tool.sh
 .    ${UTIL}/bin/logging.sh
 .    ${UTIL}/bin/load_conf.sh
 .    ${UTIL}/bin/load_util_conf.sh
 .    ${UTIL}/bin/progress_bar.sh
+.    ${UTIL}/bin/display_logo.sh
 
 SHELLWRAP_TOOL=shellwrap
-SHELLWRAP_VERSION=ver.2.0
+SHELLWRAP_VERSION=ver.3.0
 SHELLWRAP_HOME=${UTIL_ROOT}/${SHELLWRAP_TOOL}/${SHELLWRAP_VERSION}
 SHELLWRAP_CFG=${SHELLWRAP_HOME}/conf/${SHELLWRAP_TOOL}.cfg
 SHELLWRAP_UTIL_CFG=${SHELLWRAP_HOME}/conf/${SHELLWRAP_TOOL}_util.cfg
 SHELLWRAP_LOGO=${SHELLWRAP_HOME}/conf/${SHELLWRAP_TOOL}.logo
 SHELLWRAP_LOG=${SHELLWRAP_HOME}/log
-
-tabs 4
-CONSOLE_WIDTH=$(stty size | awk '{print $2}')
-
-.    ${SHELLWRAP_HOME}/bin/center.sh
-.    ${SHELLWRAP_HOME}/bin/display_logo.sh
 
 declare -A SHELLWRAP_USAGE=(
     [USAGE_TOOL]="${SHELLWRAP_TOOL}"
@@ -52,6 +45,13 @@ declare -A PB_STRUCTURE=(
     [BW]=50
     [MP]=100
     [SLEEP]=0.01
+)
+
+declare -A SHELLWRAP_LOGO_DATA=(
+    [OWNER]="vroncevic"
+    [REPO]="${SHELLWRAP_TOOL}"
+    [VERSION]="${SHELLWRAP_VERSION}"
+    [LOGO]="${SHELLWRAP_LOGO}"
 )
 
 TOOL_DBG="false"
@@ -76,78 +76,78 @@ TOOL_NOTIFY="false"
 #
 function __shellwrap {
     local TN=$1
-    display_logo
-    if [ -n "$TN" ]; then
-        local FUNC=${FUNCNAME[0]} MSG="None"
-        local STATUS_CONF STATUS_CONF_UTIL STATUS
-        MSG="Loading basic and util configuration!"
-        info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
-        progress_bar PB_STRUCTURE
-        declare -A config_shellwrap=()
-        load_conf "$SHELLWRAP_CFG" config_shellwrap
-        STATUS_CONF=$?
-        declare -A config_shellwrap_util=()
-        load_util_conf "$SHELLWRAP_UTIL_CFG" config_shellwrap_util
-        STATUS_CONF_UTIL=$?
-        declare -A STATUS_STRUCTURE=([1]=$STATUS_CONF [2]=$STATUS_CONF_UTIL)
-        check_status STATUS_STRUCTURE
-        STATUS=$?
-        if [ $STATUS -eq $NOT_SUCCESS ]; then
-            MSG="Force exit!"
-            info_debug_message_end "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
-            exit 129
-        fi
-        TOOL_DBG=${config_shellwrap[DEBUGGING]}
-        TOOL_LOG=${config_shellwrap[LOGGING]}
-        TOOL_NOTIFY=${config_shellwrap[EMAILING]}
-        local JAVA=${config_shellwrap_util[JAVA]}
-        check_tool "${JAVA}"
-        STATUS=$?
-        if [ $STATUS -eq $NOT_SUCCESS ]; then
-            MSG="Install tool ${JAVA}"
-            info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
-            MSG="Force exit!"
-            info_debug_message_end "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
-            exit 130
-        fi
-        if [ -e "${TN}" ]; then
-            local DATE=`date` SH_TN="`basename ${TN} .jar`.sh" H="#" T="    "
-            local RUN_TN="`basename ${TN} .jar`.run" SHL
-            local SHT="${config_shellwrap_util[SHELL_SCR]}"
-            local SHTF="${SHELLWRAP_HOME}/conf/${SHT}"
-            local AN=${config_shellwrap_util[AUTHOR_NAME]}
-            local AE=${config_shellwrap_util[AUTHOR_EMAIL]}
-            local COMPANY=${config_shellwrap_util[COMPANY]}
-            local V=${config_shellwrap_util[VERSION]}
-            while read SHL
-            do
-                eval echo "${SHL}" >> ${SH_TN}
-            done < ${SHTF}
-            MSG="Generating App executable file [${SH_TN}]"
-            info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
-            cat "$SH_TN" "$TN" > "$RUN_TN"
-            MSG="Remove ${SH_TN}"
-            info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
-            #rm "$SH_TN"
-            MSG="Set permission!"
-            info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
-            eval "chmod -R 775 ${RUN_TN}"
-            MSG="Wrapping java application [${TN}]"
-            info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
-            SHELLWRAP_LOGGING[LOG_MSGE]=$MSG
-            SHELLWRAP_LOGGING[LOG_FLAG]="info"
-            logging SHELLWRAP_LOGGING
-            info_debug_message_end "Done" "$FUNC" "$SHELLWRAP_TOOL"
-            exit 0
-        fi
-        MSG="Check target tool [${TN}]"
+    if [ -z "$TN" ]; then
+        usage SHELLWRAP_USAGE
+        exit 128
+    fi
+    display_logo SHELLWRAP_LOGO_DATA
+    local FUNC=${FUNCNAME[0]} MSG="None"
+    local STATUS_CONF STATUS_CONF_UTIL STATUS
+    MSG="Loading basic and util configuration!"
+    info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+    progress_bar PB_STRUCTURE
+    declare -A config_shellwrap=()
+    load_conf "$SHELLWRAP_CFG" config_shellwrap
+    STATUS_CONF=$?
+    declare -A config_shellwrap_util=()
+    load_util_conf "$SHELLWRAP_UTIL_CFG" config_shellwrap_util
+    STATUS_CONF_UTIL=$?
+    declare -A STATUS_STRUCTURE=([1]=$STATUS_CONF [2]=$STATUS_CONF_UTIL)
+    check_status STATUS_STRUCTURE
+    STATUS=$?
+    if [ $STATUS -eq $NOT_SUCCESS ]; then
+        MSG="Force exit!"
+        info_debug_message_end "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+        exit 129
+    fi
+    TOOL_DBG=${config_shellwrap[DEBUGGING]}
+    TOOL_LOG=${config_shellwrap[LOGGING]}
+    TOOL_NOTIFY=${config_shellwrap[EMAILING]}
+    local JAVA=${config_shellwrap_util[JAVA]}
+    check_tool "${JAVA}"
+    STATUS=$?
+    if [ $STATUS -eq $NOT_SUCCESS ]; then
+        MSG="Install tool ${JAVA}"
         info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
         MSG="Force exit!"
         info_debug_message_end "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
-        exit 131
+        exit 130
     fi
-    usage SHELLWRAP_USAGE
-    exit 128
+    if [ -e "${TN}" ]; then
+        local DATE=`date` SH_TN="`basename ${TN} .jar`.sh" H="#" T="    "
+        local RUN_TN="`basename ${TN} .jar`.run" SHL
+        local SHT="${config_shellwrap_util[SHELL_SCR]}"
+        local SHTF="${SHELLWRAP_HOME}/conf/${SHT}"
+        local AN=${config_shellwrap_util[AUTHOR_NAME]}
+        local AE=${config_shellwrap_util[AUTHOR_EMAIL]}
+        local COMPANY=${config_shellwrap_util[COMPANY]}
+        local V=${config_shellwrap_util[VERSION]}
+        while read SHL
+        do
+            eval echo "${SHL}" >> ${SH_TN}
+        done < ${SHTF}
+        MSG="Generating App executable file [${SH_TN}]"
+        info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+        cat "$SH_TN" "$TN" > "$RUN_TN"
+        MSG="Remove ${SH_TN}"
+        info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+        #rm "$SH_TN"
+        MSG="Set permission!"
+        info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+        eval "chmod -R 775 ${RUN_TN}"
+        MSG="Wrapping java application [${TN}]"
+        info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+        SHELLWRAP_LOGGING[LOG_MSGE]=$MSG
+        SHELLWRAP_LOGGING[LOG_FLAG]="info"
+        logging SHELLWRAP_LOGGING
+        info_debug_message_end "Done" "$FUNC" "$SHELLWRAP_TOOL"
+        exit 0
+    fi
+    MSG="Missing external tool [${TN}]"
+    info_debug_message "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+    MSG="Force exit!"
+    info_debug_message_end "$MSG" "$FUNC" "$SHELLWRAP_TOOL"
+    exit 131
 }
 
 #
